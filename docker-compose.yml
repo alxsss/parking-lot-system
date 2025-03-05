@@ -1,0 +1,18 @@
+version: '3.8'
+services:
+  payment-service:
+    build: ./payment-service
+    ports:
+      - "9090:9090"
+  lpr-service:
+    build: ./lpr-service
+    ports:
+      - "8081:8081"
+    depends_on:
+      - payment-service
+  gate-service:
+    build: ./gate-service
+    ports:
+      - "8082:8082"
+    depends_on:
+      - lpr-service

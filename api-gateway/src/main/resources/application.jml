@@ -1,0 +1,21 @@
+server:
+  port: 8080  # API Gateway runs on port 8080
+
+spring:
+  application:
+    name: api-gateway
+  cloud:
+    gateway:
+      routes:
+        - id: lpr-service
+          uri: http://localhost:8081
+          predicates:
+            - Path=/lpr/**
+        - id: payment-service
+          uri: http://localhost:9090
+          predicates:
+            - Path=/payment/**
+        - id: gate-service
+          uri: http://localhost:8082
+          predicates:
+            - Path=/gate/**
