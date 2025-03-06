@@ -8,7 +8,8 @@ WORKDIR /app
 COPY target/*.jar app.jar
 
 # Expose the port (change if needed)
-#EXPOSE 8082
+EXPOSE 8082
 
 # Run the application
-CMD ["java", "-cp", "app.jar", "com.parking.payment.GateServiceServer"]
+#CMD ["java", "-cp", "app.jar", "com.parking.gate.GateServiceServer"]
+CMD ["java", "-jar", "app.jar"]

@@ -4,18 +4,12 @@ server:
 spring:
   application:
     name: api-gateway
-  cloud:
-    gateway:
-      routes:
-        - id: lpr-service
-          uri: http://localhost:8081
-          predicates:
-            - Path=/lpr/**
-        - id: payment-service
-          uri: http://localhost:9090
-          predicates:
-            - Path=/payment/**
-        - id: gate-service
-          uri: http://localhost:8082
-          predicates:
-            - Path=/gate/**
+
+grpc:
+  client:
+    lpr-service:
+      address: "static://lpr-service:8081"
+      negotiationType: plaintext
+
+  ssl:
+    enabled: false 

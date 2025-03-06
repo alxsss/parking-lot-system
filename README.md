@@ -1,43 +1,132 @@
-System Design
+Parking Lot System - API Gateway
 
-1. Components
+Overview
 
-Camera System: Captures images of vehicles and sends them to the LPR Service.
+The Parking Lot System is a microservices-based application that manages parking lot operations, including License Plate Recognition (LPR) and Payment Verification. This repository contains the API Gateway, which serves as the entry point for client requests and routes them to the appropriate backend services using Spring Cloud Gateway and gRPC.
 
-LPR Service (License Plate Recognition): A gRPC service that processes images to extract license plate numbers.
+Features
 
-Payment Service: A gRPC service that checks if the license plate has made a payment by querying a database.
+License Plate Recognition (LPR) Service:
 
-Gate Control Service: A gRPC service that controls the gate based on the payment status.
+Accepts an image path as input and returns the detected license plate number.
 
-API Gateway: A Spring Boot application that acts as the entry point for the system, routing requests to the appropriate gRPC services.
+Integrates with the LprService via gRPC.
 
-Service Discovery: Use Spring Cloud Netflix Eureka or Consul for service discovery and load balancing.
+Payment Verification Service:
 
-Database: PostgreSQL
+Checks if a vehicle's parking fee has been paid based on the license plate.
 
-2. Workflow 
-    1. The camera captures an image and sends it to the API Gateway.
+Integrates with the PaymentService via gRPC.
 
-    2. The API Gateway forwards the image to the LPR Service.
+Spring Cloud Gateway:
 
-    3. The LPR Service extracts the license plate number and sends it to the Payment Service.
+Routes HTTP requests to the corresponding gRPC services.
 
-    4. The Payment Service queries the database and returns the payment status to the API Gateway.
+Provides error handling and logging.
 
-    5. The API Gateway sends the payment status to the Gate Control Service.
+Architecture
 
-    6. The Gate Control Service opens or closes the gate based on the payment status.
++---------------+          +----------------+         +----------------+
+|  Client (UI)  | ----->  |  API Gateway   | -----> | gRPC Services  |
++---------------+          +----------------+         +----------------+
+                                            |          |              |
+                                            |          |              |
+                                       LPR Service    Payment Service
 
-3. Technologies
-Spring Boot: For building microservices.
+Technologies Used
 
-gRPC: For RPC communication between services.
+Java 17
 
-Spring Cloud Netflix Eureka: For service discovery.
+Spring Boot 3.1.2
 
-PostgreSQL: For the payment database.
+Spring Cloud Gateway
 
-Docker: For containerization.
+gRPC
 
-Kubernetes: For orchestration (optional).
+Docker
+
+Maven
+
+Prerequisites
+
+Ensure you have the following installed:
+
+JDK 17
+
+Maven
+
+Docker
+
+Installation & Setup
+
+1. Clone the Repository
+
+git clone https://github.com/alxsss/parking-lot-system.git
+cd parking-lot-system/api-gateway
+
+2. Build the Project
+
+mvn clean install
+
+3. Run with Docker Compose
+
+Ensure Docker is running and execute:
+
+docker-compose up --build
+
+This will start the API Gateway, LPR Service, and Payment Service in separate containers.
+
+Usage
+
+1. License Plate Recognition
+
+Send a GET request to recognize a vehicle’s license plate:
+
+curl -X GET "http://localhost:8080/api/lpr/process?imagePath=test.jpg"
+
+Response:
+
+{
+  "licensePlate": "ABC123",
+  "isPaid": false
+}
+
+2. Payment Verification
+
+Check if a vehicle has paid for parking:
+
+curl -X GET "http://localhost:8080/api/payment/check?licensePlate=ABC123"
+
+Response:
+
+{
+  "isPaid": true
+}
+
+Configuration
+
+Modify application.yml to change service endpoints, gRPC configurations, or logging levels.
+
+Troubleshooting
+
+Common Errors & Solutions
+
+Service Unavailable (gRPC UNAVAILABLE: io exception)
+
+Ensure all microservices are running (docker ps).
+
+Check gRPC service ports in docker-compose.yml.
+
+gRPC Stub Not Initialized
+
+Ensure the @GrpcClient annotation is correctly configured.
+
+Check application.yml for gRPC server configurations.
+
+Contributing
+
+Feel free to submit issues or pull requests. Contributions are welcome!
+
+License
+
+This project is licensed under the MIT License - see the LICENSE file for details.

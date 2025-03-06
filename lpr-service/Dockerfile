@@ -8,7 +8,8 @@ WORKDIR /app
 COPY target/*.jar app.jar
 
 # Expose the port (change if needed)
-#EXPOSE 8081
+EXPOSE 8081
 
 # Run the application
-CMD ["java", "-cp", "app.jar", "com.parking.payment.LprServiceServer"]
+#CMD ["java", "-cp", "app.jar", "com.parking.lpr.LprServiceServer"]
+CMD ["java", "-jar", "app.jar"]

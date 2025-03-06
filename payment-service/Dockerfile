@@ -8,7 +8,7 @@ WORKDIR /app
 COPY target/*.jar app.jar
 
 # Expose the port (change if needed)
-#EXPOSE 9090
+EXPOSE 9090
 
 # Run the application
-CMD ["java", "-cp", "app.jar", "com.parking.payment.PaymentServiceServer"]
+CMD ["java", "-jar", "app.jar"]

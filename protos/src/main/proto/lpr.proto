@@ -2,21 +2,18 @@ syntax = "proto3";
 
 package com.parking.grpc;
 
-// Java package configuration
 option java_package = "com.parking.grpc";
 option java_multiple_files = true;
 
-// LPR (License Plate Recognition) Service Definition
 service LprService {
-  rpc CheckLpr (LprRequest) returns (LprResponse);
+  rpc ProcessLpr(LprRequest) returns (LprResponse);
 }
 
-// Request message for LPR service
 message LprRequest {
-  string licensePlate = 1;
+  string image_path = 1;
 }
 
-// Response message for LPR service
 message LprResponse {
-  bool recognized = 1;
+  string license_plate = 1;
+  bool is_paid = 2;
 }

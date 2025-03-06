@@ -1,0 +1,19 @@
+syntax = "proto3";
+
+package com.parking.grpc;
+
+option java_package = "com.parking.grpc";
+option java_multiple_files = true;
+
+service GateService {
+  rpc OpenGate(GateRequest) returns (GateResponse); 
+}
+
+
+message GateRequest {
+  string license_plate = 1;
+}
+
+message GateResponse {
+  string message = 1;
+}

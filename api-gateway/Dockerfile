@@ -1,6 +1,7 @@
 # Use official OpenJDK image
 FROM openjdk:17-jdk-slim
 
+RUN apt-get update && apt-get install -y curl
 # Set working directory inside container
 WORKDIR /app
 

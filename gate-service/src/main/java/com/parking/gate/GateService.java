@@ -1,21 +1,21 @@
 package com.parking.gate;
 
-import org.springframework.stereotype.Service;
-import com.parking.lpr.LprService;
+import com.parking.grpc.GateRequest;
+import com.parking.grpc.GateResponse;
+import com.parking.grpc.GateServiceGrpc;
 
-@Service
-public class GateService {
-    private final LprService lprService;
+import io.grpc.stub.StreamObserver;
 
-    public GateService(LprService lprService) {
-        this.lprService = lprService;
-    }
+public class GateService extends GateServiceGrpc.GateServiceImplBase { 
+    @Override
+    public void openGate(GateRequest request, StreamObserver<GateResponse> responseObserver) {  // ✅ Correct method signature
+        String message = "Gate opened for license plate: " + request.getLicensePlate();
 
-    public String processEntry(String licensePlate) {
-        if (lprService.checkPayment(licensePlate)) {
-            return "Gate opening for: " + licensePlate;
-        } else {
-            return "Payment required. Gate remains closed.";
-        }
+        GateResponse response = GateResponse.newBuilder()
+                .setMessage(message)
+                .build();
+
+        responseObserver.onNext(response);
+        responseObserver.onCompleted();
     }
 }
