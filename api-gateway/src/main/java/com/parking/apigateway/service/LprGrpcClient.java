@@ -8,7 +8,8 @@ import com.parking.grpc.LprRequest;
 import com.parking.grpc.LprResponse;
 import com.parking.grpc.LprServiceGrpc;
 
-import net.devh.boot.grpc.client.inject.GrpcClient;
+import io.grpc.ManagedChannel;
+import io.grpc.ManagedChannelBuilder;
 
 @Service
 public class LprGrpcClient {   
